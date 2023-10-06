@@ -1,5 +1,5 @@
 import json
-from flask import Flask,render_template,request,redirect,flash,url_for
+from flask import Flask,render_template,request,redirect,flash,url_for,abort
 
 
 def loadClubs():
@@ -26,8 +26,13 @@ def index():
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',club=club,competitions=competitions)
+    request_email = request.form['email']
+    club_list = [club for club in clubs if club['email'] == request_email]
+    if club_list:
+        club = club_list[0]
+        return render_template('welcome.html',club=club,competitions=competitions)
+    else:
+        abort(403, description="Access denied: Your email address is not one of authorised the clubs.")
 
 
 @app.route('/book/<competition>/<club>')
