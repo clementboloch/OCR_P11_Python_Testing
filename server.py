@@ -56,6 +56,9 @@ def purchasePlaces():
         abort(400, description="Bad Request: You cannot buy a negative number of places.")
     elif placesRequired > int(club['points']):
         abort(403, description="Forbidden: You cannot buy more places than you have points.")
+    elif placesRequired > 12:
+        abort(403, description="Forbidden: You cannot buy more than 12 places.")
+
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
