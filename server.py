@@ -31,7 +31,7 @@ def showSummary():
     club_list = [club for club in clubs if club['email'] == request_email]
     if club_list:
         club = club_list[0]
-        return render_template('welcome.html',club=club,competitions=competitions)
+        return render_template('welcome.html', club=club, clubs=clubs, competitions=competitions)
     else:
         abort(403, description="Access denied: Your email address is not one of authorised the clubs.")
 
@@ -49,7 +49,7 @@ def book(competition,club):
             abort(400, description="Bad Request: You cannot book places for past competitions.")
     else:
         flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, clubs=clubs, competitions=competitions)
 
 
 @app.route('/purchasePlaces',methods=['POST'])
@@ -68,7 +68,7 @@ def purchasePlaces():
         competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
         club['points'] = str(int(club['points'])-placesRequired)
         flash('Great-booking complete!')
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, clubs=clubs, competitions=competitions)
 
 
 # TODO: Add route for points display
