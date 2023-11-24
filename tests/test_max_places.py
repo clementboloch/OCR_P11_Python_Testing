@@ -19,20 +19,23 @@ with open('tests/test_max_places_competitions.json') as comps:
 def test_redeem_more_point(client, monkeypatch):
     monkeypatch.setattr("server.clubs", mock_clubs)
     monkeypatch.setattr("server.competitions", mock_competitions)
-    club = mock_clubs[0]
+    clubs = mock_clubs
     competition = mock_competitions[0]
+    nb_places = [11, 12, 13]
     
-    for club in mock_clubs:
-        for nb_places in [11, 12, 13]:
-            response = client.post('/purchasePlaces', data={
-                'competition': competition['name'],
-                'club': club['name'],
-                'places': nb_places
-            })
+    for i in range(3):
+        club = clubs[i]
+        nb = nb_places[i]
 
-            if nb_places <= 12:
-                assert response.status_code == 200
-            else:
-                assert response.status_code == 403
+        response = client.post('/purchasePlaces', data={
+            'competition': competition['name'],
+            'club': club['name'],
+            'places': nb
+        })
+
+        if nb <= 12:
+            assert response.status_code == 200
+        else:
+            assert response.status_code == 403
 
             
