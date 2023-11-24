@@ -3,5 +3,15 @@
         "name":"Test1",
         "email": "test.one@test.com",
         "points":"15"
+    },
+    {
+        "name":"Test2",
+        "email": "test.two@test.com",
+        "points":"15"
+    },
+    {
+        "name":"Test3",
+        "email": "test.three@test.com",
+        "points":"15"
     }
 ]}
