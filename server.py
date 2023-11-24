@@ -23,7 +23,7 @@ clubs = loadClubs()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', clubs=clubs)
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
@@ -68,7 +68,7 @@ def purchasePlaces():
         competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
         club['points'] = str(int(club['points'])-placesRequired)
         flash('Great-booking complete!')
-        return render_template('welcome.html', club=club, clubs=clubs, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions)
 
 
 # TODO: Add route for points display
