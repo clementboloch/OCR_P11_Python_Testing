@@ -21,6 +21,20 @@ app.secret_key = 'something_special'
 competitions = loadCompetitions()
 clubs = loadClubs()
 
+def getClub(club):
+    matches = [c for c in clubs if c['name'] == club]
+    if len(matches) == 0:
+        abort(400, description="Bad Request: Club does not exist.")
+    else:
+        return matches[0]
+
+def getCompetition(competition):
+    matches = [c for c in competitions if c['name'] == competition]
+    if len(matches) == 0:
+        abort(400, description="Bad Request: Competition does not exist.")
+    else:
+        return matches[0]
+
 @app.route('/')
 def index():
     return render_template('index.html', clubs=clubs)
@@ -38,8 +52,8 @@ def showSummary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition,club):
-    foundClub = [c for c in clubs if c['name'] == club][0]
-    foundCompetition = [c for c in competitions if c['name'] == competition][0]
+    foundClub = getClub(club)
+    foundCompetition = getCompetition(competition)
     if foundClub and foundCompetition:
         today = datetime.now()
         competitionDate = datetime.strptime(foundCompetition['date'], "%Y-%m-%d %H:%M:%S")
@@ -54,8 +68,8 @@ def book(competition,club):
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
-    competition = [c for c in competitions if c['name'] == request.form['competition']][0]
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
+    competition = getCompetition(request.form['competition'])
+    club = getClub(request.form['club'])
     placesRequired = int(request.form['places'])
 
     if placesRequired < 0:
